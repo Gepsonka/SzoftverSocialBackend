@@ -8,8 +8,8 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 
 from auth import auth
-from register import register
 from post import post
+from register import register
 
 load_dotenv()
 
