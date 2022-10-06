@@ -8,15 +8,14 @@ from flask_jwt_extended import create_access_token
 auth = Blueprint('auth', __name__)
 
 
-
-auth.route('/login', methods=['POST'])
+@auth.route('/login', methods=['POST'])
 def login():
     if request.is_json:
         req_json = request.get_json()
-        if not 'username' in req_json or req_json.get('username'):
+        if not 'username' in req_json or not req_json.get('username'):
             return jsonify({'msg': 'Username required.'})
         
-        if not 'password' in req_json or req_json.get('pasword'):
+        if not 'password' in req_json or not req_json.get('password'):
             return jsonify({'msg': 'Password required.'})
         
         user = User.query.filter_by(username=req_json.get('username')).first()

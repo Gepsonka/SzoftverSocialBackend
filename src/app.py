@@ -1,12 +1,9 @@
-from turtle import pos
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 import os
-from flask_sqlalchemy import SQLAlchemy
 from database.database import db
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token
-
+from flask_jwt_extended import JWTManager
 from auth import auth
 from register import register
 from post import post
@@ -32,10 +29,6 @@ app.register_blueprint(post, url_prefix='/post')
 @app.route('/')
 def geetings():
     return jsonify({'greeting': "Hi there!"})
-
-
-
-
 
 
 
