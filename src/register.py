@@ -63,7 +63,7 @@ def user_register():
             date_of_birth=datetime.strptime(req_json.get('dateOfBirth'), '%m/%d/%Y'),
             updated_at=datetime.now(),
             created_at=datetime.now(),
-            _password=generate_password_hash(req_json.get('password'), 12)
+            _password=generate_password_hash(req_json.get('password'), 12).decode('utf-8')
         )
             
         db.session.add(new_user)
