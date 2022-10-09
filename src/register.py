@@ -1,5 +1,7 @@
 from datetime import datetime
-from flask import Blueprint
+import email
+import json
+from flask import Blueprint, request
 from flask import jsonify, request
 from database.database import User, db
 import re
@@ -24,7 +26,7 @@ def user_register():
         if not 'username' in req_json or not req_json.get('username'):
             return jsonify({'mgs': 'Username required!'}), 400
         
-        if User.query.filter_by(username=req_json.get('username')).first():
+        if User.query.filter_by(username=req_json.get('username')).one_or_none() is not None:
             return jsonify({'mgs': 'Username is taken!'}), 400
         
         if len(req_json.get('username')) < 8:
@@ -36,7 +38,7 @@ def user_register():
         if not 'email' in req_json or not req_json.get('email'):
             return jsonify({'mgs': 'Email required!'}), 400
         
-        if User.query.filter_by(email=req_json.get('email')).first():
+        if User.query.filter_by(email=req_json.get('email')).one_or_none() is not None:
             return jsonify({'mgs': 'There is already a user registered with this email!'}), 400
         
         if not re.fullmatch(EMAIL_REGEX, req_json.get('email')):
@@ -60,7 +62,7 @@ def user_register():
             email=req_json.get('email'),
             first_name=req_json.get('firstName'),
             last_name=req_json.get('lastName'),
-            date_of_birth=datetime.strptime(req_json.get('dateOfBirth'), '%m/%d/%Y'),
+            date_of_birth=datetime.strptime(req_json.get('dateOfBirth')[:10], '%Y-%m-%d'),
             updated_at=datetime.now(),
             created_at=datetime.now(),
             _password=generate_password_hash(req_json.get('password'), 12).decode('utf-8')
@@ -73,3 +75,35 @@ def user_register():
     
     else :
         return jsonify({'msg': 'Json data is not valid'}), 400
+    
+    
+@register.route('/is-username-exists', methods=['POST'])
+def is_username_exists():
+    if not request.is_json:
+        return jsonify({'msg':'Request must be formatted as json!'}), 400
+    
+    req_json = request.get_json()
+    
+    if 'username' not in req_json:
+        return jsonify({'msg':'Username field required.'}), 400
+    
+    if User.query.filter_by(username=req_json.get('username')).one_or_none() is not None:
+        return jsonify({'isTaken': True}), 200
+    
+    return jsonify({'isTaken': False}), 200
+
+
+@register.route('/is-email-exists', methods=['POST'])
+def is_email_exists():
+    if not request.is_json:
+        return jsonify({'msg':'Request must be formatted as json!'}), 400
+    
+    req_json = request.get_json()
+    
+    if 'email' not in req_json:
+        return jsonify({'msg':'Email field required.'}), 400
+    
+    if User.query.filter_by(email=req_json.get('email')).one_or_none() is not None:
+        return jsonify({'isTaken': True}), 200
+    
+    return jsonify({'isTaken':False}), 200
