@@ -7,10 +7,9 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, current_user
 from auth import auth
-from register import register
 from post import post
+from register import register
 from services import get_user_by_username
-
 
 load_dotenv()
 
