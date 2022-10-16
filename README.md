@@ -48,7 +48,7 @@ The user will be able to post pictures and text, post comments.
 ### 2. Login User
 
 - The user will be able to login with username and password given the account is registered.
-- Login information will be protected by JWT authorization.
+- Authentication and authorization will be secured by JWT tokens.
 
 
 ![Login User](images/login.jpg)
@@ -82,18 +82,54 @@ The user will be able to post pictures and text, post comments.
 
 ### Frontend development
 
-- Frontend will be handled by Botond.
-TODO
+- Frontend will be made by Botond.
 
 ### Backend development
 
 - Creating user and Login will be handled by Alex.
-- User actions and account management will be handled by Ádám.
+- User actions and account management (including post and comment management) will be handled by Ádám.
+- Backend progress will be supervised by Botond.
 
 ### Scope of the project
 
 >Initially, we would like to make a social app where users can create basic posts with pictures and text. Also users can interact with other users posts, for example: Like, comment.
 
+# TODO progress
+
+- Frontend initial setup :white_check_mark:
+- Backend initial setup :white_check_mark:
+- Create documentation :white_check_mark:
+- Frontend login page :white_check_mark:
+- Frontend login logic :white_check_mark:
+- Backend login logic :white_check_mark:
+- Database scheme :bangbang:
+- Backend login logic :white_check_mark:
+- Frontend registration page :white_check_mark:
+- Frontend registration logic :white_check_mark:
+- Backend registration logic :white_check_mark:
+- Creatin authorization checks on the frontend (if the user is not authenticated ask to login or register/if not permitted to do warn him/her) :clock130:
+- Frontend userpage :arrows_counterclockwise:
+- Backend user information endpoint :arrows_counterclockwise:
+- Frontend user modification tab :clock130:
+- Backend user update endpoint :clock130:
+- Backend user delete endpoint :clock130:
+- Frontend userpage post creation tab :clock130:
+- Frontend post creation modal :clock130:
+- Frontend post creation logic :clock130:
+- Backend post creation endpoint :clock130:
+- Frontend post update page :clock130:
+- Frontend post update logic :clock130:
+- Backend post update endpoint :clock130:
+- Frontend post delete page :clock130:
+- Frontend post delete logic :clock130:
+- Backend post delete logic :clock130:
+- Frontend like post logic :clock130:
+- Bakcend like post endpoint :clock130:
+- Frontend comment under post :clock130:
+- Backend comment endpoint :clock130:
+- Frontend modify comment :clock130:
+- Backend modify comment :clock130:
+
 ## Price
 
-TODO
+120 Million HUF
