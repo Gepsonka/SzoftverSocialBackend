@@ -5,7 +5,7 @@ import os
 from database.database import db, User
 from flask_migrate import Migrate
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, current_user
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from auth import auth
 from post import post
 from register import register
@@ -14,6 +14,8 @@ from services import get_user_by_username
 load_dotenv()
 
 app = Flask(__name__)
+
+print(os.environ.get('SECRET_KEY'))
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['JWT_SECRET_KEY'] = os.environ.get('SECRET_KEY')

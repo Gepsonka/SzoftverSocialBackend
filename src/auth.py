@@ -1,4 +1,3 @@
-from xxlimited import new
 from flask import Blueprint, request, jsonify
 from database.database import User
 from constants import ResponseErrorCodes
