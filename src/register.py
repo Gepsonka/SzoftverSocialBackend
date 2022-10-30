@@ -1,7 +1,7 @@
 from datetime import datetime
 import email
 import json
-from flask import Blueprint, request
+from flask import Blueprint
 from flask import jsonify, request
 from database.database import User, db
 import re

@@ -3,7 +3,7 @@ from database.database import User
 from constants import ResponseErrorCodes
 from flask_bcrypt import check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, current_user
-from services import get_user_by_username
+from services.services import get_user_by_username
 
 auth = Blueprint('auth', __name__)
 

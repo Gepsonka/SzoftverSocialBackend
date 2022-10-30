@@ -45,7 +45,7 @@ class Post(db.Model):
     user_rel = db.relation('User')
     
     
-class PostLikes(db.Model):
+class PostLike(db.Model):
     __tablename__ = "PostLikes"
     id = db.Column(db.Integer, primary_key=True)
     liked_by = db.Column(db.Integer, db.ForeignKey('User.id'))
@@ -57,8 +57,8 @@ class PostLikes(db.Model):
         db.UniqueConstraint('liked_by', 'liked_post', name='unique_component_commit'),
     )
     
-class PostComments(db.Model):
-    __tablename__ = "PostComments"
+class PostComment(db.Model):
+    __tablename__ = "PostComment"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String)
     author = db.Column(db.Integer, db.ForeignKey('User.id'))
