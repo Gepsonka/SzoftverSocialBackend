@@ -71,3 +71,10 @@ def user_delete():
     db.session.commit()
 
     return jsonify({'msg': "User was successfully deleted!"}), 200
+
+@user.route('/profile', methods = ['GET'])
+@jwt_required()
+def get_profile():
+    user = get_user_by_username(get_jwt_identity()).to_dict()
+    del user['_password']
+    return jsonify(user), 200

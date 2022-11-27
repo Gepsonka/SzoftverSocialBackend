@@ -9,6 +9,7 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from auth import auth
 from post import post
 from register import register
+from comment import comment
 from services.services import get_user_by_username
 from user import user
 
@@ -39,6 +40,7 @@ app.register_blueprint(auth)
 app.register_blueprint(register)
 app.register_blueprint(post, url_prefix='/post')
 app.register_blueprint(user)
+app.register_blueprint(comment, url_prefix='/comment')
 
 
 
@@ -47,8 +49,6 @@ app.register_blueprint(user)
 @jwt_required()
 def geetings():
     return jsonify({'username': get_user_by_username(get_jwt_identity()).username})
-
-
 
 if __name__=='__main__':
     app.run(debug=True)

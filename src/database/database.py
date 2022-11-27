@@ -3,6 +3,7 @@ from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask_bcrypt import generate_password_hash
+from sqlalchemy_serializer import SerializerMixin
 
 
 BCRYPT_LOG_ROUNDS = 12
@@ -11,7 +12,7 @@ BCRYPT_LOG_ROUNDS = 12
 db = SQLAlchemy()
 
  
-class User(db.Model):
+class User(db.Model, SerializerMixin):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -34,7 +35,7 @@ class User(db.Model):
 
 
 
-class Post(db.Model):
+class Post(db.Model, SerializerMixin):
     __tablename__ = "Post"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(127))
@@ -45,7 +46,7 @@ class Post(db.Model):
     user_rel = db.relation('User')
     
     
-class PostLike(db.Model):
+class PostLike(db.Model, SerializerMixin):
     __tablename__ = "PostLikes"
     id = db.Column(db.Integer, primary_key=True)
     liked_by = db.Column(db.Integer, db.ForeignKey('User.id'))
@@ -57,7 +58,7 @@ class PostLike(db.Model):
         db.UniqueConstraint('liked_by', 'liked_post', name='unique_component_commit'),
     )
     
-class PostComment(db.Model):
+class PostComment(db.Model, SerializerMixin):
     __tablename__ = "PostComment"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String)
