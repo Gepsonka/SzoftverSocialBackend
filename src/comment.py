@@ -11,10 +11,10 @@ comment = Blueprint('comment', __name__)
 @comment.route('/<comment_id>', methods=['GET'])
 def get_comment(comment_id):
     post_to_get = PostComment.query.filter_by(id=comment_id).one_or_none()
-    
+
     if post_to_get is None:
         return jsonify({'msg': 'Comment does not exists'}), 404
-    
+
     return jsonify(post_to_get.to_dict()), 200
 
 
@@ -25,12 +25,12 @@ def create_comment():
         return jsonify({'msg': 'Request is not valid json!'}), 400
 
     req_json = request.get_json()
-    
+
     user = get_user_by_username(get_jwt_identity())
-    
+
     if req_json.get('content') == '' or req_json.get('content') is None:
         return jsonify({'msg': 'Content required'}), 400
-    
+
     comment = PostComment(
         author = user.id,
         content = req_json.get('content'),
@@ -38,6 +38,21 @@ def create_comment():
 
     db.session.add(comment)
     db.session.commit()
-    
+
     return jsonify(comment.to_dict()), 201
 
+@comment.route('delete-comment/<comment_id>', methods=['DELETE'])
+@jwt_required()
+def delete_comment(comment_id):
+    comment_to_delete = PostComment.query.filter_by(id=comment_id).one_or_none()
+
+    if comment_to_delete is None:
+        return jsonify({'msg': 'Comment does not exists'}), 404
+
+    if comment_to_delete.user_id != get_user_by_username(get_jwt_identity()).id:
+        return jsonify({'msg': 'Cannot delete comment because it is not yours!'}), 403
+
+    db.session.delete(comment_to_delete)
+    db.session.commit()
+
+    return jsonify(comment_to_delete.to_dict()), 200
