@@ -32,7 +32,7 @@ def get_personal_posts():
     
     personal_posts = Post.query.filter_by(user_id=user.id).all()
     
-    return jsonify(personal_posts.to_dict()), 200
+    return jsonify([x.to_dict() for x in personal_posts]), 200
 
 
     
@@ -63,7 +63,7 @@ def create_post():
     return jsonify(new_post.to_dict()), 200
 
 
-@post.route('/update-post/<post_id>', methods = ['PUT'])
+@post.route('/<post_id>', methods = ['PUT'])
 @jwt_required()
 def update_post(post_id):
     if not request.is_json:
@@ -109,7 +109,7 @@ def delete_post(post_id):
     return jsonify(post_to_delete.to_dict()), 200
 
 
-@post.route('is-post-liked/<post_id>', methods=['GET'])
+@post.route('/is-post-liked/<post_id>', methods=['GET'])
 @jwt_required()
 def is_post_liked(post_id):
     post_to_get = Post.query.filter_by(id=post_id).one_or_none()
@@ -121,7 +121,7 @@ def is_post_liked(post_id):
     return jsonify({'isLiked': liked}), 200
 
 
-@post.route('like-post/<post_id>', methods = ['POST'])
+@post.route('/like-post/<post_id>', methods = ['POST'])
 @jwt_required()
 def like_post(post_id):
     user = get_user_by_username(get_jwt_identity())
@@ -145,7 +145,7 @@ def like_post(post_id):
     return {}, 200
 
 
-@post.route('unlike-post/<post_id>', methods=["DELETE"])
+@post.route('/unlike-post/<post_id>', methods=["DELETE"])
 @jwt_required()
 def unlike_post(post_id):
     user = get_user_by_username(get_jwt_identity())

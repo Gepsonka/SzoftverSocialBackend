@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import os
 from flask import Blueprint
 from flask import jsonify, request
@@ -52,11 +52,11 @@ def user_update():
                 file.save(os.path.join('/media', 'profile_pics', f'{user.id}.{file.filename.split(".")[-1]}'))
                 user.profile_pic = os.path.join('/media', 'profile_pics', f'{user.id}.{file.filename.split(".")[-1]}')
 
-    user.updated_at = datetime.datetime.utcnow
+    user.updated_at = datetime.now()
 
     db.session.commit()
 
-    return jsonify({'msg': 'User was successfully updated!'}), 200
+    return jsonify(user.to_dict()), 200
 
 
 @user.route('/user-delete', methods=['DELETE'])

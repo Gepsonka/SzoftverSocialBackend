@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 from database.database import db, User
 from flask_migrate import Migrate
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from auth import auth
 from post import post
@@ -29,6 +29,7 @@ app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(hours=8)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('PSQL_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['MEDIA_SETS'] = 'avatar'
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 migrate = Migrate(app, db)
