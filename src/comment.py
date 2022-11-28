@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -56,3 +57,29 @@ def delete_comment(comment_id):
     db.session.commit()
 
     return jsonify(comment_to_delete.to_dict()), 200
+
+@comment.route('/<comment_id>', methods = ['PUT'])
+@jwt_required()
+def update_comment(comment_id):
+    if not request.is_json:
+        return jsonify({'msg': 'Request is not valid json!'}), 400
+
+    req_json = request.get_json()
+
+    comment_to_update = PostComment.query.filter_by(id=comment_id).one_or_none()
+
+    if comment_to_update is None:
+        return jsonify({'msg': 'Comment does not exist!'}), 404
+
+    if comment_to_update.user_id != get_user_by_username(get_jwt_identity()).id:
+        return jsonify({'msg': 'Cannot update comment because it is not yours!'}), 403
+
+    if req_json.get('content') is not None:
+        comment_to_update.content = req_json.get('content')
+
+    comment_to_update.updated_at = datetime.now()
+
+    db.session.commit()
+
+    return jsonify(comment_to_update.to_dict())
+    
