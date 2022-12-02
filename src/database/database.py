@@ -73,3 +73,15 @@ class PostMedia(db.Model):
     img_path = db.Column(db.String, unique=True)
     post = db.Column(db.Integer, db.ForeignKey('User.id'))
     post_rel = db.relation('User')
+
+class CommentLike(db.Model, SerializerMixin):
+    __tablename__ = "CommentLikes"
+    id = db.Column(db.Integer, primary_key=True)
+    liked_by = db.Column(db.Integer, db.ForeignKey('User.id'))
+    liked_comment = db.Column(db.Integer, db.ForeignKey('PostComment.id'))
+    liked_by_rel = db.relation('User')
+    liked_comment_rel = db.relation('User')
+
+    __table_args__ = (
+        db.UniqueConstraint('liked_by', 'liked_comment', name='unique_component_commit'),
+    )

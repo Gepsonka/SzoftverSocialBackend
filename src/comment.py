@@ -4,7 +4,7 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from database.database import User, Post, PostMedia
 from services.services import get_user_by_username
-from database.database import db, Post, PostComment
+from database.database import db, Post, PostComment, CommentLike
 
 comment = Blueprint('comment', __name__)
 
@@ -82,4 +82,47 @@ def update_comment(comment_id):
     db.session.commit()
 
     return jsonify(comment_to_update.to_dict())
+
+@comment.route('/like-comment/<comment_id>', methods = ['POST'])
+@jwt_required()
+def like_comment(comment_id):
+    user = get_user_by_username(get_jwt_identity())
+
+    comment_to_like = PostComment.query.filter_by(id=comment_id).one_or_none()
+
+    if comment_to_like is None:
+        return jsonify({'msg': 'Comment not found!'}), 404
+
+    if PostComment.query.filter_by(liked_by = user.id, liked_comment = comment_to_like.id).one_or_none() is not None:
+        return jsonify({'msg': 'Comment is already liked!'}), 400
     
+    like = CommentLike(
+        liked_by = user.id,
+        liked_post = comment_to_like.id
+    )
+
+    db.session.add(like)
+    db.session.commit()
+
+    return {}, 200
+
+@comment.route('/unlike-comment/<comment_id>', methods = ['DELETE'])
+@jwt_required()
+def unlike_comment(comment_id):
+
+    user = get_user_by_username(get_jwt_identity())
+
+    comment_to_like = PostComment.query.filter_by(id=comment_id).one_or_none()
+
+    like  = PostComment.query.filter_by(liked_by=user.id, liked_comment=comment_to_like.id).one_or_none()
+
+    if like is None:
+        return jsonify({'msg': 'Comment is not liked!'}), 404
+
+    if (like is None):
+        return 400
+
+    db.session.delete(like)
+    db.session.commit()
+
+    return {}, 200
