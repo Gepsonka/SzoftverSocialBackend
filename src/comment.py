@@ -95,7 +95,7 @@ def like_comment(comment_id):
 
     if PostComment.query.filter_by(liked_by = user.id, liked_comment = comment_to_like.id).one_or_none() is not None:
         return jsonify({'msg': 'Comment is already liked!'}), 400
-    
+
     like = CommentLike(
         liked_by = user.id,
         liked_post = comment_to_like.id
@@ -126,3 +126,18 @@ def unlike_comment(comment_id):
     db.session.commit()
 
     return {}, 200
+
+@comment.route('/get-liked-comment/<comment_id>', methods = ['GET'])
+@jwt_required()
+def get_liked_comment(comment_id):
+    liked_comment_to_get = PostComment.query.filter_by(id=comment_id).all()
+
+    user = get_user_by_username(get_jwt_identity())
+
+    if liked_comment_to_get is None:
+        return jsonify({'msg': 'Liked comment not found!'}), 404
+
+    if CommentLike.query.filter_by(liked_by=user.id, liked_comment=liked_comment_to_get.id).all() is None:
+        return jsonify({'msg': "Comment isn't liked!"}), 400
+
+    return jsonify([x.to_dict() for x in liked_comment_to_get]), 200
