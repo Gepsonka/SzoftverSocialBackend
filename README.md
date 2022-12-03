@@ -111,24 +111,29 @@ The user will be able to post pictures and text, post comments.
 - Frontend userpage :arrows_counterclockwise:
 - Backend user information endpoint :arrows_counterclockwise:
 - Frontend user modification tab :clock130:
-- Backend user update endpoint :clock130:
-- Backend user delete endpoint :clock130:
+- Backend user update endpoint :white_check_mark:
+- Backend user delete endpoint :white_check_mark:
 - Frontend userpage post creation tab :clock130:
 - Frontend post creation modal :clock130:
 - Frontend post creation logic :clock130:
-- Backend post creation endpoint :clock130:
+- Backend post creation endpoint :white_check_mark:
 - Frontend post update page :clock130:
 - Frontend post update logic :clock130:
-- Backend post update endpoint :clock130:
+- Backend post update endpoint :white_check_mark:
 - Frontend post delete page :clock130:
 - Frontend post delete logic :clock130:
-- Backend post delete logic :clock130:
+- Backend post delete logic :white_check_mark:
 - Frontend like post logic :clock130:
-- Bakcend like post endpoint :clock130:
+- Backend like post endpoint :white_check_mark:
 - Frontend comment under post :clock130:
-- Backend comment endpoint :clock130:
+- Backend comment endpoint :white_check_mark:
 - Frontend modify comment :clock130:
-- Backend modify comment :clock130:
+- Backend modify comment :white_check_mark:
+- Backend delete comment :white_check_mark:
+- Backend like comment :white_check_mark:
+- Backend unlike comment :white_check_mark:
+- Backend get liked posts :white_check_mark:
+- Backend get liked comments :white_check_mark:
 
 ## Price
 
